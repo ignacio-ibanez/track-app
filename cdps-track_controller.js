@@ -22,11 +22,11 @@ exports.create = function (req, res) {
 	}); 
 
 	// Escribe los metadatos de la nueva canción en el registro.
-	track_model.tracks[name] = {
+/*	track_model.tracks[name] = {
 		name: name,
 		url: url
 	};
-	
+*/	
 	res.status(200).send('Archivo subido.');
 };
 
@@ -34,17 +34,17 @@ exports.create = function (req, res) {
 // TODO:
 // - Eliminar en tracks.cdpsfy.es el fichero de audio correspondiente a trackId
 exports.destroy = function (req, res) {
-	console.log("En DELETE");
 	var id = req.params.trackId;
-
+	
+	console.log("Borrando: "+id);
 	// Aquí debe implementarse el borrado del fichero de audio indetificado por trackId en tracks.cdpsfy.es
-	var track = track_model.tracks[id];
+//	var track = track_model.tracks[id];
 	//var name = track.name + '.mp3';
-	console.log('Path a borrar: ', track.url);
-	fs.unlinkSync(track.url);
+//	console.log('Path a borrar: ', track.url);
+	fs.unlinkSync('/mnt/nas/'+id);
 
 	// Borra la entrada del registro de datos
-	delete track_model.tracks[id];
+//	delete track_model.tracks[id];
 	
 	console.log('Exito borrando archivo');
 	res.status(200).send('Archivo eliminado: '+id);
