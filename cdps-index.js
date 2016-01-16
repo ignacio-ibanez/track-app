@@ -18,6 +18,6 @@ router.get('/tracks/:trackId', trackController.show);*/
 
 router.post('/upload', multer({inMemory:true}), trackController.create);
 
-router.delete('/tracks/:trackId', trackController.destroy);
+router.delete('/delete/:trackId', trackController.destroy);
 
 module.exports = router;
