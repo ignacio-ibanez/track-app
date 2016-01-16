@@ -31,7 +31,7 @@ exports.create = function (req, res) {
 	var id = track.name.split('.')[0];
 	var name = track.originalname.split('.')[0];
 	console.log('Recibido nuevo fichero de audio.', name);
-	var url = 'http://10.1.2.1/download'+name;
+	var url = 'http://10.1.2.1/download/'+name;
 
 	// Creamos el form-data con el buffer y nombre del track original
 	var data = {
@@ -47,25 +47,48 @@ exports.create = function (req, res) {
 	needle.post('http://10.1.2.1/upload', data, { /*headers: { content_length: Buffer.byteLength(data) },*/ multipart:true}, function(err,result){
 		if(err) {
 			console.log('ERROR: ', err);
+			//Redirigimos a tracks
+			res.redirect('/tracks');
+                        console.log('Redirigiendo a /tracks');
 		} else {
 			console.log('Resultado:', result.body);
+			// Añdimos la cancion al modelo
+       			 track_model.tracks[id] = {
+                		name: name,
+                		url: url
+        		}
+
+			//Redirigimos a /tracks
+		        res.redirect('/tracks');
+        		console.log('Redirigiendo a /tracks');
 		}
-	});
-        
-	//Redirigimos a /tracks
-	res.redirect('/tracks');
-	console.log('Redirigiendo a /tracks');
+	});        
 };
 
 // Borra una canción (trackId) del registro de canciones 
-// TODO:
-// - Eliminar en tracks.cdpsfy.es el fichero de audio correspondiente a trackId
 exports.destroy = function (req, res) {
-	var trackId = req.params.trackId;
+	var id = req.params.trackId;
+	console.log('Archivo a borrar: ', id);
+	
+	//Creamos y enviamos peticion para borrar el archivo
+	var options = {
+  		username: 'root',
+  		password: 'xxxx'
+	}
+ 	var track = track_model.tracks[id];
+	var url = 'http://10.1.2.1/delete/'+track.name;
+	console.log('url: ', url);
+	needle.delete(url, null, options, function(err, resp) {
+  		if(err) {
+			console.log('ERROR :', err);
+			res.redirect('/tracks');
+		} else {
+			console.log('Resultado: ', resp.body);
 
-	// Aquí debe implementarse el borrado del fichero de audio indetificado por trackId en tracks.cdpsfy.es
-
-	// Borra la entrada del registro de datos
-	delete track_model.tracks[trackId];
-	res.redirect('/tracks');
+			// Borra la entrada del registro de datos
+		        delete track_model.tracks[id];
+			console.log('Redirigiendo a tracks');
+			res.redirect('/tracks');
+		}	
+	});
 };
