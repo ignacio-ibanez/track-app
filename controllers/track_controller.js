@@ -28,7 +28,7 @@ exports.create = function (req, res) {
 	var id = track.name.split('.')[0];
 	var name = track.originalname.split('.')[0];
 	console.log('Recibido nuevo fichero de audio.', name);
-	var url = 'http://10.1.2.1/mnt/nas/'+name+'.mp3';
+	var url = 'http://tracks.cdpsfy.es/mnt/nas/'+name+'.mp3';
 	console.log('URL descarga: '+url);
 
 	// Creamos el form-data con el buffer y nombre del track original
@@ -42,7 +42,7 @@ exports.create = function (req, res) {
 	}
 
 	// Realizamos el post con el form-data
-	needle.post('http://10.1.2.1/upload', data, { /*headers: { content_length: Buffer.byteLength(data) },*/ multipart:true}, function(err,result){
+	needle.post('http://tracks.cdpsfy.es/upload', data, { /*headers: { content_length: Buffer.byteLength(data) },*/ multipart:true}, function(err,result){
 		if(err) {
 			console.log('ERROR: ', err);
 			//Redirigimos a tracks
@@ -74,7 +74,7 @@ exports.destroy = function (req, res) {
   		password: 'xxxx'
 	}
  	var track = track_model.tracks[id];
-	var url = 'http://10.1.2.1/delete/'+track.name;
+	var url = 'http://tracks.cdpsfy.es/delete/'+track.name;
 	console.log('url: ', url);
 	needle.delete(url, null, options, function(err, resp) {
   		if(err) {
