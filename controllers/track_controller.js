@@ -23,15 +23,13 @@ exports.show = function (req, res) {
 };
 
 // Escribe una nueva canción en el registro de canciones.
-// TODO:
-// - Escribir en tracks.cdpsfy.es el fichero de audio contenido en req.files.track.buffer
-// - Escribir en el registro la verdadera url generada al añadir el fichero en el servidor tracks.cdpsfy.es
 exports.create = function (req, res) {
 	var track = req.files.track;
 	var id = track.name.split('.')[0];
 	var name = track.originalname.split('.')[0];
 	console.log('Recibido nuevo fichero de audio.', name);
-	var url = 'http://10.1.2.1/download/'+name;
+	var url = 'http://10.1.2.1/mnt/nas/'+name+'.mp3';
+	console.log('URL descarga: '+url);
 
 	// Creamos el form-data con el buffer y nombre del track original
 	var data = {
