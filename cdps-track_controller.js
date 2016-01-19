@@ -7,8 +7,8 @@ exports.create = function (req, res) {
 	var id = track.name.split('.')[0];
 	console.log('id guardado en listener: ', id);
 	var name = track.originalname.split('.')[0];
-	var path = '/mnt/nas/'+name;
-	
+	var path = '/mnt/nas/'+name+'.mp3';
+	console.log(path);
 	// Guardamos la cancion en el cluster
    	fs.writeFile(path, track.buffer, function(err) {
 	    if(err) {
@@ -26,7 +26,7 @@ exports.destroy = function (req, res) {
 	console.log("Borrando: "+id);
 
 	// Borramos el archivo
-	fs.unlinkSync('/mnt/nas/'+id);
+	fs.unlinkSync('/mnt/nas/'+id+'.mp3');
 
 	console.log('Exito borrando archivo');
 	res.status(200).send('Archivo eliminado: '+id);
