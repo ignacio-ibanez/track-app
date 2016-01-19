@@ -7,7 +7,8 @@ var tracks_dir = process.env.TRACKS_DIR || './media/';
 var trackController = require('./cdps-track_controller');
 
 router.get('/', function(req, res) {
-  res.render('./cdps-index');
+ // res.render('./cdps-index');
+ res.status(200).send("OK");
 });
 /*
 router.get('/tracks', trackController.list);
